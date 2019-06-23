@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0zclovg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3">
+  <bpmn:collaboration id="Collaboration_1ygghlw">
+    <bpmn:participant id="Participant_1nszt1u" name="Anmeldung Rotes Kreuz" processRef="Process_1" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Anmeldung gestartet">
+      <bpmn:outgoing>SequenceFlow_0plj17m</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0plj17m" sourceRef="StartEvent_1" targetRef="Task_16j0rir" />
+    <bpmn:sequenceFlow id="SequenceFlow_04fir9r" sourceRef="Task_16j0rir" targetRef="EndEvent_1qnf61w" />
+    <bpmn:endEvent id="EndEvent_1qnf61w" name="Anmeldung beendet&#10;&#10;">
+      <bpmn:incoming>SequenceFlow_04fir9r</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_16j0rir" name="Formular &#10;ausfüllen&#10;">
+      <bpmn:incoming>SequenceFlow_0plj17m</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_04fir9r</bpmn:outgoing>
+    </bpmn:task>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1ygghlw">
+      <bpmndi:BPMNShape id="Participant_1nszt1u_di" bpmnElement="Participant_1nszt1u">
+        <dc:Bounds x="188" y="208" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="283" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="274" y="358" width="55" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_16j0rir_di" bpmnElement="Task_16j0rir">
+        <dc:Bounds x="463" y="293" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0plj17m_di" bpmnElement="SequenceFlow_0plj17m">
+        <di:waypoint x="319" y="333" />
+        <di:waypoint x="463" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1qnf61w_di" bpmnElement="EndEvent_1qnf61w">
+        <dc:Bounds x="710" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="702" y="358" width="55" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_04fir9r_di" bpmnElement="SequenceFlow_04fir9r">
+        <di:waypoint x="563" y="333" />
+        <di:waypoint x="710" y="333" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

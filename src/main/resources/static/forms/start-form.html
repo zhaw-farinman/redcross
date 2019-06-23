@@ -1,47 +1,90 @@
-<strong>Here you would put the actual form to start the process</strong>
+<strong>Neuanmeldung</strong>
 
-<p>
+<!--<p>
   You can use this form through Camunda Tasklist
   by setting the formKey of a BPMN Start Event to:
   <code>embedded:/forms/start-form.html</code>
-</p>
+  
+</p>-->
 
-<form class="form-horizontal">
+<form class="camundaForm">
+
   <div class="form-group">
-    <label class="control-label">Your Name</label>
+    <label class="control-label">Vorname</label>
     <div class="controls">
-      <input type="text" 
-             cam-variable-name="name"
-             cam-variable-type="String"
-             required
-             class="form-control" />
+      <input type="text" cam-variable-name="userModel.firstName" cam-variable-type="String"
+        ng-model="userModel.firstName" required class="form-control" />
+    </div>
+    <label class="control-label">Nachname</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.lastName" cam-variable-type="String" ng-model="userModel.lastName"
+        ng-value="user.firstName" required class="form-control" />
+    </div>
+    <label class="control-label">Adresse</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.street" cam-variable-type="String" ng-model="userModel.street"
+        ng-value="user.street" required class="form-control" />
+    </div>
+    <label class="control-label">Place</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.place" cam-variable-type="String" ng-model="userModel.place"
+        ng-value="user.place" required class="form-control" />
+    </div>
+    <label class="control-label">PLZ</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.postcode" cam-variable-type="Integer"
+        ng-model="userModel.postcode" ng-value="user.postcode" required class="form-control" />
+    </div>
+    <label class="control-label">Email</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.email" cam-variable-type="String" ng-model="userModel.email"
+        ng-value="user.email" required class="form-control" />
+    </div>
+    <label class="control-label">Privat Telefon</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.privatePhone" cam-variable-type="String"
+        ng-model="userModel.privatePhone" ng-value="user.privatePhone" required class="form-control" />
+    </div>
+    <label class="control-label">Mobil Telefon</label>
+    <div class="controls">
+      <input type="text" cam-variable-name="userModel.mobilePhone" cam-variable-type="String"
+        ng-model="userModel.mobilePhone" ng-value="user.mobilePhone" required class="form-control" />
+    </div>
+    <label class="control-label">verifiziert</label>
+    <div class="controls">
+      <input class="form-control" 
+                   name="checked" 
+                   cam-variable-type="Boolean" 
+                   cam-variable-name="user.checked"
+                   ng-model="userModel.checked" 
+                   type="checkbox"/>
     </div>
   </div>
 
   <script cam-script type="text/form-script">
-    // custom JavaScript goes here
-
-    inject(['Uri', function(Uri) {
-
-      camForm.on('submit', function() {
-        // this callback is executed when the form is submitted, *before* the submit request to
-        // the server is executed
-
-        // store data in domain service and retrieve business key
-        $.ajax({
-          url: Uri.appUri('engine://engine/:engine/history/activity-instance/count'),
-          method: 'POST',
-          async: false,
-          data: JSON.stringify({ finished: true }),
-          contentType: 'application/json',
-          dataType: 'json',
-          success: function (data) {
-            camForm.businessKey = data.count
+    // AngularJS-Scope-Variable camForm.variableManager wird lokalen Variable zugewiesen
+    var variableManager = camForm.variableManager;
+    // Camunda Form Lifecycle: Nach dem Laden des Formulars werden Prozessvariablen von der Process Engine (Server) in den variableManager geladen
+    camForm.on('form-loaded', function() {
+        variableManager.fetchVariable("user");
+    });
+    // Camunda Form Lifecycle: Nach dem Laden der Variablen ...
+    camForm.on('variables-fetched', function() {
+        // ... werden diese direkt an den AngularJS-Scope gehängt für das Model-View-Binding
+        $scope.userModel = variableManager.variableValue("user");
+    });        
+    camForm.on('submit', function() {
+      // Bestehende Prozessvariable löschen und eine neue erstellen 
+      variableManager.destroyVariable('user');
+      variableManager.createVariable({
+          name:'user',
+          type:'Object',
+          value: $scope.userModel,
+          valueInfo: {
+              serializationDataFormat: 'application/json',
+              objectTypeName: 'ama.redcross.processdata.User'
           }
-        });
-
       });
-
-    }]);
-  </script>
+    });
+</script>
 </form>
